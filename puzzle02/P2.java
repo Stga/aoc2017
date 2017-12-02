@@ -18,8 +18,9 @@ public class P2 {
 		if(lineValues.length>1) {
 		    for(int i=0; i<lineValues.length-1; i++) {
 		        int currentVal = Integer.parseInt(lineValues[i]);
-		        //Check the currentIndex/allSubsequent & allSubsequent/currentIndex.
-			//break if divisible compare found as there is only one per line.
+		        
+			//Check the currentIndex/allSubsequent & allSubsequent/currentIndex.
+			//break if found as there is only one per line.
 		        for(int x=i+1; x<lineValues.length; x++) {
 			    int secondVal = Integer.parseInt(lineValues[x]);
 			    if(currentVal % secondVal == 0) {total += currentVal / secondVal; break;}
