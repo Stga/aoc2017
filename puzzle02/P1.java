@@ -33,6 +33,5 @@ public class P1 {
 	catch(IOException e) {
 	    System.out.println(e);
 	}
-
     }
 }
