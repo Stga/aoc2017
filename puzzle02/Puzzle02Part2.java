@@ -1,13 +1,12 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class P2 {
+public class Puzzle02Part2 {
     public static void main(String[] args) {
         long startTime = System.nanoTime();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("./puzzle02/puzzle02Input.txt"));
 	    int total = 0;
 	    String line;
 
@@ -34,11 +33,8 @@ public class P2 {
 	    long endTime = System.nanoTime();
 	    System.out.println(endTime - startTime);
 	}
-	catch(FileNotFoundException e) {
-	    System.out.println(e);
-	}
 	catch(IOException e) {
-	    System.out.println(e);
+	    System.out.println(e.getMessage());
 	}
     }
 }

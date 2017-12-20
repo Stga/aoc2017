@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.ArrayList; 
 
-public class Main {
+public class Puzzle07Main {
 	public static void main(String[] args) {
 		try {
 			Graph graph = new Graph();
-			BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("puzzle07Input.txt"));
 			String line;
 
 
@@ -42,7 +42,7 @@ public class Main {
 					for(String higherProgram : higherPrograms) {
 						String s2 = higherProgram.substring(1, higherProgram.length());
 
-						Node higherNode = null;
+						Node higherNode;
 
 						if(graph.containsKey(s2)) {
 							higherNode = graph.getNode(s2);
@@ -63,7 +63,7 @@ public class Main {
 			System.out.println(lowestNodeName);
 
 		} catch(IOException e) {
-			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
 	}
 }

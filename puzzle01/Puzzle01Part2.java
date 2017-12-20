@@ -3,7 +3,7 @@
 //string. The input string is circular so the second half need to be tested
 //against the first half due to wrap-around.
 //*
-public class A {
+public class Puzzle01Part2 {
   public static void main(String[] args) {
     long startTime = System.nanoTime();
 
