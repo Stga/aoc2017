@@ -6,7 +6,7 @@ public class Puzzle11Main {
 	public static void main(String[] args) {
 		try {
 			Hex hex = new Hex();
-			BufferedReader br = new BufferedReader(new FileReader("puzzle11Input.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("./puzzle11/puzzle11Input.txt"));
 			String line;
 			line = br.readLine();
 			

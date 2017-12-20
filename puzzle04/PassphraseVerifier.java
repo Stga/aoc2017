@@ -1,18 +1,18 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class PassphraseVerifier {
-  public PassphraseVerifier() {}
+	private PassphraseVerifier() {
+	}
   
   public static void main(String[] args) {
     long startTime = System.nanoTime();
     try {
 	  PassphraseVerifier pv = new PassphraseVerifier();
-	  BufferedReader br = new BufferedReader(new FileReader("passphrases.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("./puzzle04/passphrases.txt"));
 	  String line;
 	  int validPassphraseCount = 0;
 	  int validAntiAnagramCount = 0;
@@ -34,12 +34,8 @@ public class PassphraseVerifier {
 	  long endTime = System.nanoTime();
 	  System.out.println(String.format("Took %d nanoseconds", endTime-startTime));
 	}
-	
-	catch(FileNotFoundException e) {
-	  System.out.println(e);
-	}
 	catch(IOException e) {
-	  System.out.println(e);
+		System.out.println(e.getMessage());
 	}
   }
   
@@ -63,10 +59,10 @@ public class PassphraseVerifier {
   }
   
   private boolean containsAnagram(String[] lineValues) {
-	HashSet<String> h = new HashSet<String>();
+	  HashSet<String> h = new HashSet<>();
 
-	for(int i=0; i<lineValues.length; i++) {
-	  char[] currentValue = lineValues[i].toCharArray();
+	  for (String value : lineValues) {
+		  char[] currentValue = value.toCharArray();
 	  Arrays.sort(currentValue);
 	  String stringValue = new String(currentValue);
 	  h.add(stringValue);

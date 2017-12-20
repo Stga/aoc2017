@@ -1,10 +1,10 @@
-import java.util.LinkedList;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.ListIterator;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class MemoryReallocator {
 
@@ -13,13 +13,13 @@ public class MemoryReallocator {
 	private ArrayList<String> bankAllocationList;
 	private boolean bankAllocationsUnique;
 
-	public MemoryReallocator(int[] banksBlockCounts) {
-		this.memBanks = new LinkedList<Integer>();
+	private MemoryReallocator(int[] banksBlockCounts) {
+		this.memBanks = new LinkedList<>();
 		for(int blockCount : banksBlockCounts) {
 			this.memBanks.add(blockCount);
 		}
-		this.bankAllocationSet = new HashSet<String>(this.memBanks.size());
-		this.bankAllocationList = new ArrayList<String>(this.memBanks.size());
+		this.bankAllocationSet = new HashSet<>(this.memBanks.size());
+		this.bankAllocationList = new ArrayList<>(this.memBanks.size());
 		this.bankAllocationsUnique = true;
 	}
 	
@@ -39,38 +39,69 @@ public class MemoryReallocator {
 		
 		return largestBank;
 	}
-	
-	public boolean saveAllocations() {
+
+	public static void main(String[] args) {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("./puzzle06/memBankSizes.txt"));
+			String line = br.readLine();
+			String[] lineValues = line.split("\\t");
+
+			int[] banksBlockCounts = new int[lineValues.length];
+
+			for (int i = 0; i < lineValues.length; i++) {
+				banksBlockCounts[i] = Integer.parseInt(lineValues[i]);
+			}
+
+			MemoryReallocator mr = new MemoryReallocator(banksBlockCounts);
+
+			int j = -1;
+			while (mr.bankAllocationsUnique) {
+				mr.bankAllocationsUnique = mr.saveAllocations();
+				mr.reallocateBanks();
+				j++;
+			}
+
+			System.out.println(j);
+			mr.getAllocations();
+			int previousAllocationLocation = mr.bankAllocationList.indexOf(mr.getAllocations()) - 1;
+			System.out.println(j - previousAllocationLocation);
+			br.close();
+
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	private boolean saveAllocations() {
 		String allocations = this.getAllocations();
-		
+
 		final boolean isUnique = this.bankAllocationSet.add(allocations);
 		if(isUnique) {
 			bankAllocationList.add(allocations);
 		}
-		
+
 		return isUnique;
 	}
-	
-	public String getAllocations() {
-		String allocations = "";
-		
+
+	private String getAllocations() {
+		StringBuilder allocations = new StringBuilder();
+
 		ListIterator<Integer> iter = this.memBanks.listIterator();
 		while(iter.hasNext()) {
-			allocations += iter.next();
+			allocations.append(iter.next());
 		}
-		
-		return allocations;
+
+		return allocations.toString();
 	}
-	
-	public void reallocateBanks() {
-		final int bankSize = this.memBanks.size();
+
+	private void reallocateBanks() {
 		final int largestBank = this.getLargestBank();
 		int distributableBlocks = this.memBanks.get(largestBank);
 		ListIterator<Integer> iter = this.memBanks.listIterator(largestBank);
 		iter.next();
 		//Clean out the bank
 		this.memBanks.set(largestBank, 0);
-		
+
 		//Redistribute blocks
 		while(distributableBlocks > 0) {
 			if(iter.hasNext()) {
@@ -86,44 +117,12 @@ public class MemoryReallocator {
 	}
 	
 	public void printAllocations() {
-		String allocations = "";
-		
+		StringBuilder allocations = new StringBuilder();
+
 		for(int i=0; i<this.memBanks.size(); i++) {
-			allocations += memBanks.get(i) + "\t";
+			allocations.append(memBanks.get(i) + "\t");
 		}
-		
-		System.out.println(allocations);
-	}
-	
-	public static void main(String[] args) {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("memBankSizes.txt"));
-			String line = br.readLine();
-			String[] lineValues = line.split("\\t");
-			
-			int[] banksBlockCounts = new int[lineValues.length];
-			
-			for(int i=0; i<lineValues.length; i++) {
-				banksBlockCounts[i] = Integer.parseInt(lineValues[i]);
-			}
-			
-			MemoryReallocator mr = new MemoryReallocator(banksBlockCounts);
-			
-			int j = -1;
-			while(mr.bankAllocationsUnique) {
-				mr.bankAllocationsUnique = mr.saveAllocations();
-				mr.reallocateBanks();		
-				j++;
-			}
-			
-			System.out.println(j);
-			mr.getAllocations();
-			int previousAllocationLocation = mr.bankAllocationList.indexOf(mr.getAllocations())-1;
-			System.out.println(j - previousAllocationLocation);
-			br.close();
-			
-		} catch(IOException e) {
-			System.out.println(e);
-		}
+
+		System.out.println(allocations.toString());
 	}
 }

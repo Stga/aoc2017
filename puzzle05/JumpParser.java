@@ -1,21 +1,31 @@
-import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class JumpParser {
 	private BufferedReader br;
 	private ArrayList<Integer> jumpInstructions;
-		
-	public JumpParser(String instructionFile) {
+
+	private JumpParser(String instructionFile) {
 		try {
 			this.br = new BufferedReader(new FileReader(instructionFile));
-			this.jumpInstructions = new ArrayList<Integer>();
+			this.jumpInstructions = new ArrayList<>();
 			this.readJumpFileContents();
 		} catch(FileNotFoundException e) {
-			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
+	}
+
+	public static void main(String[] args) {
+		JumpParser jp = new JumpParser("./puzzle05/jmpOffsets.txt");
+		final int stepsToExit = jp.getStepsToExit();
+		System.out.println(stepsToExit);
+
+		JumpParser jpAlt = new JumpParser("./puzzle05/jmpOffsets.txt");
+		final int stepsToExitAlt = jpAlt.getStepsToExitAlt();
+		System.out.println(stepsToExitAlt);
 	}
 	
 	private void readJumpFileContents() {
@@ -26,16 +36,16 @@ public class JumpParser {
 				this.jumpInstructions.add(jumpInstruction);
 			}
 		} catch(IOException e) {
-			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
 	}
 	
 	private int getStepsToExit() {
 		int instructionPointer = 0;
-		int jumpOffset = 0;
+		int jumpOffset;
 		int jumpCount = 0;
 		boolean jumping = true;
-		
+
 		while(jumping) {
 			if(instructionPointer > (this.jumpInstructions.size()-1)) {
 				//System.out.println(String.format("IP: %d, Size-1: %d", instructionPointer, this.jumpInstructions.size()-1));
@@ -43,22 +53,22 @@ public class JumpParser {
 			} else {
 				jumpOffset = this.jumpInstructions.get(instructionPointer);
 				//System.out.println(String.format("JmpCount: %d, IP: %d, Offset: %d", jumpCount, instructionPointer, jumpOffset));
-				
+
 				this.jumpInstructions.set(instructionPointer, jumpOffset+=1);
 				instructionPointer += jumpOffset-1;
 				jumpCount++;
 			}
 		}
-		
+
 		return jumpCount;
 	}
 	
 	private int getStepsToExitAlt() {
 		int instructionPointer = 0;
-		int jumpOffset = 0;
+		int jumpOffset;
 		int jumpCount = 0;
 		boolean jumping = true;
-		
+
 		while(jumping) {
 			if(instructionPointer > (this.jumpInstructions.size()-1)) {
 				//System.out.println(String.format("IP: %d, Size-1: %d", instructionPointer, this.jumpInstructions.size()-1));
@@ -66,24 +76,14 @@ public class JumpParser {
 			} else {
 				jumpOffset = this.jumpInstructions.get(instructionPointer);
 				//System.out.println(String.format("JmpCount: %d, IP: %d, Offset: %d", jumpCount, instructionPointer, jumpOffset));
-				
+
 				int newOffset = (jumpOffset>= 3) ? jumpOffset-1 : jumpOffset+1;
 				this.jumpInstructions.set(instructionPointer, newOffset);
 				instructionPointer += jumpOffset;
 				jumpCount++;
 			}
 		}
-		
+
 		return jumpCount;
-	}
-	
-	public static void main(String[] args) {
-		JumpParser jp = new JumpParser("jmpOffsets.txt");
-		final int stepsToExit = jp.getStepsToExit();
-		System.out.println(stepsToExit);
-		
-		JumpParser jpAlt = new JumpParser("jmpOffsets.txt");
-		final int stepsToExitAlt = jpAlt.getStepsToExitAlt();
-		System.out.println(stepsToExitAlt);
 	}
 }

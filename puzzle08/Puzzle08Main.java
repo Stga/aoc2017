@@ -1,13 +1,13 @@
-import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Puzzle08Main {
 	public static void main(String[] args) {
 		try {
 			HashMap<String, Integer> registerMap = new HashMap<>();
-			BufferedReader br = new BufferedReader(new FileReader("puzzle08Input.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("./puzzle08/puzzle08Input.txt"));
 			int largestValOccurred = Integer.MIN_VALUE;
 			
 			String command;

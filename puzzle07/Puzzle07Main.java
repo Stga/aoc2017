@@ -2,14 +2,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.util.Iterator;
-import java.util.ArrayList; 
-
 public class Puzzle07Main {
 	public static void main(String[] args) {
 		try {
 			Graph graph = new Graph();
-			BufferedReader br = new BufferedReader(new FileReader("puzzle07Input.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("./puzzle07/puzzle07Input.txt"));
 			String line;
 
 
